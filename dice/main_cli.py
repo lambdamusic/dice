@@ -4,7 +4,7 @@
 import sys
 import click
 
-from .app import networkviz 
+from .app import utils 
 from .app import main 
 
 
@@ -17,11 +17,11 @@ $ dice --test
 $ dice -k "solar cells" -s 0.6 -f 2 -e 2
 // keywords search: defaults to 500 top records
 
+$ dice -k '"Terry Riley" AND music'
+// outer single quotes and inner exact-ssearch quotes 
+
 $ dice 'search publications for "cancer" return publications[id+concepts] limit 500' -f 2 -s 0.5 -e 3
 // Full DSL query using outer single quotes
-
-$ dice 'search publications for "\"brain cancer\"" return publications[id+concepts] limit 500' -f 2 -s 0.7 -e 3
-// Full DSL query with escaped inner quotes 
 """
 
 
@@ -61,9 +61,10 @@ def main_cli(ctx,   dslquery=None,
         # main action
 
         if keywords:
-            q = f'search publications for "{keywords}" return publications[id+concepts_scores] sort by times_cited limit 500'
+            q = utils.dsl_generate_query_from_search_keywords(keywords)
             final_query = q
             if verbose: click.secho("Q = " + q, dim=True)
+            # return
 
         elif dslquery:
             # the main arg

@@ -175,3 +175,19 @@ def dsl_search_term_from_query(dslquery):
     return " ".join(candidates)
 
 
+
+
+# import json
+# "{json.dumps(keywords)}" 
+
+def dsl_generate_query_from_search_keywords(keywords):
+    """Auto generate a valid DSL query"""
+    print(keywords)
+    newk = keywords.replace('"', '\\"')
+    print(newk)
+    q = f"""search publications 
+        for "{newk}" 
+        where concepts is not empty
+        return publications[id+concepts_scores] 
+        sort by times_cited limit 500"""
+    return q 
