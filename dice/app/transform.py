@@ -217,6 +217,7 @@ def networkx_to_dict(ngraph, verbose=True):
 
         temp = {'id': _id, 'label': label, 'group': 1}
         temp['value'] = int(freqn) 
+        temp['freq'] = int(freq) 
         temp.update(x[1]) # add all other features too
         # TEST COLORS hardcoded
         temp['color'] = TEST_COLORS[3*score_bucket]

@@ -17,6 +17,15 @@ TEMPLATE_DATA_FILE = "template-data.js"
 TEMPLATE_HTML_FILE = "template-main.html"  # ==> NEWEST IN DEVELOPMENT
 
 
+# EG HOW TO ADD CUSTOM FILTERS 
+
+# def upperstring(input):
+#     """Custom filter"""
+#     return input.upper()
+
+# env.filters['upperstring'] = upperstring
+
+
 
 
 class NetworkViz(object):

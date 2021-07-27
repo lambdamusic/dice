@@ -224,7 +224,7 @@ redrawAll();
 
 function focus_node(nodeid) {
   network.focus(nodeid, {scale: 2}); 
-
+  scrollTo("mynetwork");
   add_node_to_focus_list(nodeid);
 
 }
@@ -243,4 +243,12 @@ function add_node_to_focus_list(nodeid) {
   $(".node-active").removeClass("node-active");
   $( "#node-" + nodeid  ).addClass("node-active");
 
+}
+
+
+// SCROLL TO ELEMENT
+function scrollTo(elementtoScrollToID) {
+  $([document.documentElement, document.body]).animate({
+    scrollTop: $("#"+elementtoScrollToID).offset().top
+  }, 500);
 }

@@ -90,9 +90,14 @@
                     <hr>
                     
                     
-                    {% for node in nodes  %}
+                    {% for node in nodes|sort(attribute="id")  %}
 
-                        <a href="javascript:focus_node('{{node.id}}')" style="color: green;">{{node.label}}</a> |
+                        <!-- <a href="javascript:focus_node('{{node.id}}')" style="color: green;">{{node.label}} ({{node.value}})</a> | -->
+                        <a href="javascript:focus_node('{{node.id}}')" 
+                            title="{{node.label}} frequency: {{node.freq}}"
+                            class="btn btn-xs btn-info concept"
+                            style="color: black; margin: 2px; font-size: 90%;
+                                opacity: {{node.value}}%">{{node.label}}</a> 
 
                         
                     {% endfor %}
@@ -179,7 +184,7 @@
         </footer>
 
         <!-- jQuery core -->
-        <script type="text/javascript" src="static/js/jquery-3.5.1.slim.min.js"></script>
+        <script type="text/javascript" src="static/js/jquery-3.6.0.min.js"></script>
 
         <!-- VisJS core -->
         <script type="text/javascript" src="static/js/vis-network.min.js"></script>
