@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <title>Vis Network | Basic usage</title>
+
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+  <style type="text/css">
+    #mynetwork {
+      width: 100%;
+      height: 600px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<p>
+  Create a simple network with some nodes and edges.
+</p>
+
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+  // create an array with nodes
+  var nodes = new vis.DataSet([
+    {'id': 1, 'label': 'Knowledge Graphs'},
+    {id: 2, label: 'RDF'},
+    {id: 3, label: 'Linked Data'},
+    {id: 4, label: 'Python'},
+    {id: 5, label: 'APIs'},
+    {id: 6, label: 'Information Architecture'},
+    {id: 7, label: 'Data Architecture'},
+    {id: 8, label: 'Knowledge Modeling'},
+    {id: 9, label: 'Web Development'},
+    {id: 10, label: 'Ontology'},
+  ]);
+
+  // create an array with edges
+  var edges = new vis.DataSet([
+    {from: 1, to: 3},
+    {from: 1, to: 2},
+    {from: 9, to: 4},
+    {from: 7, to: 5},
+    {from: 8, to: 6},
+    {from: 1, to: 8},
+    {from: 8, to: 7},
+    {from: 8, to: 9},
+    {from: 8, to: 10},
+  ]);
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {
+    nodes: { 
+      shape: "dot",  // ellipse, circle, database, box, text, dot, square, icon
+      borderWidth: 1,
+      borderWidthSelected: 2,
+      color: {
+        border: 'grey',
+        background: 'lightgray',
+        highlight: {
+          border: '#2B7CE9',
+          background: '#D2E5FF'
+        },
+        hover: {
+          border: '#2B7CE9',
+          background: '#D2E5FF'
+        }
+      },
+      },
+    edges: {
+      shadow:{
+        enabled: true,
+        color: 'rgba(0,0,0,0.5)',
+        size:10,
+        x:5,
+        y:5
+      },
+    },
+    physics: {
+      stabilization: false,
+      barnesHut: {
+        springLength: 100
+      }
+    },
+
+  };
+  var network = new vis.Network(container, data, options);
+</script>
+
+
+</body>
+</html>
