@@ -1,11 +1,9 @@
-# Python CLI  structure
+# Dimensions Concepts Explorer (DICE)
 
 
 ## Why?
 
-This repo serves as a good reference point for a simple and basic CLI
-structure. This can either be consumed visually or cloned in which case you
-should change `dice` to whatever your CLI name will be.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 
 ### Install

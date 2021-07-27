@@ -143,6 +143,11 @@ function neighbourhoodHighlight(params) {
       var selectedNode = params.nodes[0];
       var degrees = 1;
 
+
+      // ADD NODE TO LIST IN HTML PANEL TOO
+      add_node_to_focus_list(selectedNode);
+      // console.log(selectedNode);
+
       // mark all nodes as hard to read.
       for (var nodeId in allNodes) {
         allNodes[nodeId].color = 'gainsboro';
@@ -206,6 +211,8 @@ function neighbourhoodHighlight(params) {
       }
     }
     nodesDataset.update(updateArray);
+
+    // end of neighbourhoodHighlight()
   }
 
 
@@ -218,8 +225,14 @@ redrawAll();
 function focus_node(nodeid) {
   network.focus(nodeid, {scale: 2}); 
 
-  // $("#action-results").text(nodeid);
-  
+  add_node_to_focus_list(nodeid);
+
+}
+
+
+// ADD NODE TO CLICKED-NODES HTML PANEL 
+function add_node_to_focus_list(nodeid) {
+
   $("#initial-message").hide();
 
   // show and bring  to the top
