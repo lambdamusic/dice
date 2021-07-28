@@ -182,9 +182,9 @@ def dsl_search_term_from_query(dslquery):
 
 def dsl_generate_query_from_search_keywords(keywords):
     """Auto generate a valid DSL query"""
-    print(keywords)
+    # print(keywords)
     newk = keywords.replace('"', '\\"')
-    print(newk)
+    # print(newk)
     q = f"""search publications 
         for "{newk}" 
         where concepts is not empty

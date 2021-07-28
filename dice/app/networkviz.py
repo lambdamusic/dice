@@ -19,11 +19,18 @@ TEMPLATE_HTML_FILE = "template-main.html"  # ==> NEWEST IN DEVELOPMENT
 
 # EG HOW TO ADD CUSTOM FILTERS 
 
-# def upperstring(input):
-#     """Custom filter"""
-#     return input.upper()
+def tag_style(input_freqn):
+    """Custom filter for styling concept tags from freq-normalised"""
+    MIN_OPAC, MAX_OPAC = 50, 90
+    if input_freqn < MIN_OPAC:
+        font, opac = 70, MIN_OPAC
+    elif input_freqn > MAX_OPAC:
+        font, opac = 120, input_freqn
+    else:
+        font, opac = 90, input_freqn
+    return f"font-size: {font}%; opacity: {opac}%;"
 
-# env.filters['upperstring'] = upperstring
+env.filters['tag_style'] = tag_style
 
 
 

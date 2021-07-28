@@ -96,8 +96,7 @@
                         <a href="javascript:focus_node('{{node.id}}')" 
                             title="{{node.label}} frequency: {{node.freq}}"
                             class="btn btn-xs btn-info concept"
-                            style="color: black; margin: 2px; font-size: 90%;
-                                opacity: {{node.value}}%">{{node.label}}</a> 
+                            style="color: black; margin: 2px; {{node.value|tag_style}} ">{{node.label}}</a> 
 
                         
                     {% endfor %}
@@ -179,7 +178,7 @@
 
         <footer class="footer mt-auto py-3">
             <div class="container">
-              <span class="text-muted">Place sticky footer content here.</span>
+              <span class="text-muted">DICE - Dimensions concepts explorer.</span>
             </div>
         </footer>
 
