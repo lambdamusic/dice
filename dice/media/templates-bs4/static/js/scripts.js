@@ -24,6 +24,7 @@ function redrawAll() {
   };
   var options = {
     autoResize: true,
+    clickToUse: true,
     groups: {
       1: {  
         borderWidth: 1,
@@ -76,7 +77,8 @@ function redrawAll() {
         dragNodes: true,
         hideEdgesOnDrag: true,
         hideNodesOnDrag: false,
-        navigationButtons: true
+        navigationButtons: true,
+        keyboard: true
     },
     layout: {
         improvedLayout: true
