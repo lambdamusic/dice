@@ -68,7 +68,8 @@ class NetworkViz(object):
         self.template_js = TEMPLATE_DATA_FILE
         self.template_html = TEMPLATE_HTML_FILE
         self.query = dslquery
-        self.title = title or dsl_search_term_from_query(dslquery) or self.fm.timestamp
+        self.query_keywords = dsl_extract_search_terms(dslquery)
+        self.title = title or self.query_keywords or self.fm.timestamp
         self.final_url = "" # set after build
 
     def add_nodes(self, llist):
@@ -132,6 +133,7 @@ class NetworkViz(object):
 
         context = {
             'title' : self.title,
+            'query_keywords' : self.query_keywords,
             'query' : self.query,
             'timestamp' : self.fm.timestamp,
             'nodes' : self.nodes,

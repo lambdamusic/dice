@@ -161,18 +161,32 @@ def print_parameters(min_score, min_freq, min_edge_weight):
 
 
 
-def dsl_search_term_from_query(dslquery):
-    """Return the keyword search parameter from a DSL query
+def dsl_extract_search_terms(dslquery):
+    """Return the inner keyword search parameter from a DSL query. 
+    IE just the stuff in quotes.
+
+    Returns the query terms WITHOUT the outer  quotes eg 
+
+    \"cell division\" AND spiders
 
     Parameters
     ----------
     dslquery : string
-        Full DSL query eg 'search publications for "napoleon" return publications[id+concepts_scores] limit 500'
+        Full DSL query eg 
+        'search publications for "napoleon" return publications[id+concepts_scores] limit 500'
     """
     #TODO improve
     l = dslquery.split()
-    candidates = l[l.index("for")+1:l.index("return")]
-    return " ".join(candidates)
+    try:
+        if "where" in l:
+            candidates = l[l.index("for")+1:l.index("where")]
+        else:
+            candidates = l[l.index("for")+1:l.index("return")]
+    except:
+        printDebug("Error with <dsl_extract_search_terms>..")
+        return ""
+    data = " ".join(candidates)
+    return data[1:len(data)-1]  # remove outer quotes
 
 
 
