@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from jinja2 import Environment, PackageLoader, select_autoescape
+from networkx.readwrite import json_graph
+import json
 
 from .utils import *
 from .settings import *
@@ -77,6 +79,21 @@ class NetworkViz(object):
 
     def add_edges(self, llist):
         self.edges += llist
+
+
+
+    def render_data_export(self, nxgraph, verbose=True, output_file="graph_data.json"):
+        """Renders the networkX graph to an output format for sharing.  
+        """
+
+        render_filename = output_file
+
+        data1 = json_graph.node_link_data(nxgraph)
+        contents = json.dumps(data1)
+
+        loc = self.fm.save2File(contents, render_filename)
+        if verbose: printDebug("=> Rendered graph_data.json", "comment")
+        return loc
 
 
     def render_js(self, verbose=True, output_file="data.js"):
