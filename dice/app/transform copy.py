@@ -9,7 +9,6 @@ import networkx as nx
 import itertools
 
 from .utils import *
-from .settings import MAX_NETWORK_NODES_DEFAULT, MAX_NETWORK_EDGES_DEFAULT
 
 
 
@@ -65,14 +64,8 @@ def prune_concepts(concepts_and_pubs, min_score=None, min_freq=None, verbose=Tru
 
 
 
-def dsl_to_networkx(concepts_and_pubs, 
-                    max_nodes=MAX_NETWORK_NODES_DEFAULT, 
-                    max_edges=MAX_NETWORK_EDGES_DEFAULT, 
-                    verbose=True):
+def dsl_to_networkx(concepts_and_pubs, min_edge_weight=None, verbose=True):
     """
-    Turn the concepts cooccurence dataframe into a networkX graph.
-    Prune it based on max nodes and edges value, so that the final network viz 
-    is performing ok.
     """
 
     if concepts_and_pubs.empty:
@@ -83,9 +76,9 @@ def dsl_to_networkx(concepts_and_pubs,
 
     DATA_SUBSET = concepts_and_pubs
 
-    # if not min_edge_weight:
-    #     min_edge_weight = click.prompt('> Please enter a *co-occurrence* frequency (= edge weight) threshold', default=2)
-    # min_edge_weight = int(min_edge_weight)
+    if not min_edge_weight:
+        min_edge_weight = click.prompt('> Please enter a *co-occurrence* frequency (= edge weight) threshold', default=2)
+    min_edge_weight = int(min_edge_weight)
     
     G = nx.Graph() # networkX instance
 
@@ -131,38 +124,25 @@ def dsl_to_networkx(concepts_and_pubs,
     # prune network 
     #
 
+    # TODO NEW APPROACH IDEA: for every node, only keep the top 5 (N) edges based on weight
+    # so we won't have isolated nodes, and can keep things only based on score/freq
 
-    def prune_edges(networkG, min_edge_weight, verbose=True):
-        """Remove edges and isolated nodes based on a min-edge-weight threshold. 
-        This function is called as many times as needed in order to get a network 
-        of an acceptable size.
-        """
 
-        G = networkG
-        if verbose: click.secho(f".. cleaning up edges with weight < {min_edge_weight}...")
 
-        for a, b, w in list(G.edges(data='weight')):
-            if w < min_edge_weight:
-                G.remove_edge(a, b)
-        if verbose: click.secho(f"Nodes: {len(G.nodes())} Edges: {len(G.edges())}")
+    if verbose: click.secho(f".. cleaning up edges with weight < {min_edge_weight}...")
 
-        if verbose: click.secho(f".. removing isolated nodes...", dim=True)
+    for a, b, w in list(G.edges(data='weight')):
+        if w < min_edge_weight:
+            G.remove_edge(a, b)
+    if verbose: click.secho(f"Nodes: {len(G.nodes())} Edges: {len(G.edges())}")
 
-        G.remove_nodes_from(list(nx.isolates(G)))
-        if verbose: click.secho(f"Nodes: {len(G.nodes())} Edges: {len(G.edges())}")
+    if verbose: click.secho(f".. removing isolated nodes...")
 
-        return G
+    G.remove_nodes_from(list(nx.isolates(G)))
+    if verbose: click.secho(f"Nodes: {len(G.nodes())} Edges: {len(G.edges())}")
 
-    
-    if verbose: click.secho(f"Pruning network..", fg="green")
-
-    # use edge_weight to reduce network size
-    edge_weight = 1
-    while len(G.nodes()) > max_nodes or len(G.edges()) > max_edges:
-        edge_weight +=1
-        G = prune_edges(G, edge_weight)
-        
     network_graph =  G
+
     return network_graph
 
 

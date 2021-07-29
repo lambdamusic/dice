@@ -59,7 +59,7 @@ class NetworkViz(object):
 
     """
 
-    def __init__(self, fileManager, nodes=None, edges=None, title="", dslquery=""):
+    def __init__(self, fileManager, nodes=None, edges=None, title="", dslquery="", verbose=True):
         """
         Init
         """
@@ -73,6 +73,8 @@ class NetworkViz(object):
         self.query_keywords = dsl_extract_search_terms(dslquery)
         self.title = title or self.query_keywords or self.fm.timestamp
         self.final_url = "" # set after build
+        if verbose: click.secho(f"Building HTML outputs...", fg="green")
+        
 
     def add_nodes(self, llist):
         self.nodes += llist
@@ -161,7 +163,7 @@ class NetworkViz(object):
         # self.final_url = self.save2File(contents, render_filename, self.output_path)
         self.final_url = self.fm.save2File(contents, render_filename)
         if verbose: printDebug(f"=> Rendered {render_filename}", "comment")
-        if verbose: printDebug("DONE - %s" % (self.final_url), "comment")
+        if verbose: printDebug("DONE - %s" % (self.final_url), "important")
 
         self._render_static_files()
 

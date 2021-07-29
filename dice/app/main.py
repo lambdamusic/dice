@@ -12,19 +12,24 @@ from . import settings
 
 
 
-def build_viz(dslquery, cached_data=None, score=None, freq=None, edgeweight=None):
+def build_viz(dslquery, cached_data=None, score=None, freq=None, nnodes=None, nedges=None, use_defaults=True):
     
     fm = FileManager()
 
+    if not (score and freq) and use_defaults:
+        # NOTE if all false, apply defaults
+        score, freq  = MIN_CONCEPTS_SCORE_DEFAULT, MIN_CONCEPTS_FREQ_DEFAULT
 
     if not cached_data:
         df = run_dsl_query(dslquery, fm)
     else:
         df = cached_data[0]
 
+    nnodes = nnodes or MAX_NETWORK_NODES_DEFAULT
+    nedges = nedges or MAX_NETWORK_EDGES_DEFAULT
     
     dfpruned = prune_concepts(df, score, freq)
-    ngraph = dsl_to_networkx(dfpruned, edgeweight)
+    ngraph = dsl_to_networkx(dfpruned, nnodes, nedges)
     nodes, edges = networkx_to_dict(ngraph)
 
     if len(nodes) and len(edges):
@@ -45,7 +50,7 @@ def build_viz(dslquery, cached_data=None, score=None, freq=None, edgeweight=None
 
 
 
-def test_run(filename="testdata/dsl_dataframe.json", score=0.5, freq=2, edgeweight=2):
+def test_run(filename="testdata/dsl_dataframe.json", score=0.5, freq=2):
     """Takes local JSON data from cached DSL query and build a viz with it.
     """
     fm = FileManager()
@@ -55,7 +60,7 @@ def test_run(filename="testdata/dsl_dataframe.json", score=0.5, freq=2, edgeweig
     dslquery = """search publications for "napoleon" return publications[id+concepts_scores] limit 500"""
 
     dfpruned = prune_concepts(df, score, freq)
-    ngraph = dsl_to_networkx(dfpruned, edgeweight)
+    ngraph = dsl_to_networkx(dfpruned)
     nodes, edges = networkx_to_dict(ngraph)
 
     if len(nodes) and len(edges):

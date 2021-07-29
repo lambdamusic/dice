@@ -33,18 +33,20 @@ $ dice 'search publications for "cancer" return publications[id+concepts] limit 
 @click.option('--test', is_flag=True, help='Test network viz using local data')
 @click.option('--queryprompt', "-q",  is_flag=True, help='Interactive query prompt (easier for quoted text)')
 @click.option('--keywords', "-k", help='Keywords to search in publications full text - defaults to 500 publications')
-@click.option('--score', "-s", help='Score threshold: 0 to 1')
-@click.option('--freq', "-f", help='Frequency threshold: 1 to 20')
-@click.option('--edgeweight', "-e", help='Edges weight threshold: 1 to X')
+@click.option('--cscore', "-s", help='Concept Score threshold: 0-1')
+@click.option('--cfreq', "-f", help='Concept Frequency threshold: 1 to X')
+@click.option('--nnodes', "-n", help='Network max nodes: default is 200')
+@click.option('--nedges', "-e", help='Network max edges: default is 300')
 @click.pass_context
 def main_cli(ctx,   dslquery=None, 
                     examples=False, 
                     test=False, 
                     queryprompt=None, 
                     keywords=None, 
-                    score=None, 
-                    freq=None, 
-                    edgeweight=None, 
+                    cscore=None, 
+                    cfreq=None, 
+                    nnodes=None, 
+                    nedges=None, 
                     verbose=True):
     """Main CLI."""
 
@@ -63,8 +65,6 @@ def main_cli(ctx,   dslquery=None,
         if keywords:
             q = utils.dsl_generate_query_from_search_keywords(keywords)
             final_query = q
-            if verbose: click.secho("Q = " + q, dim=True)
-            # return
 
         elif dslquery:
             # the main arg
@@ -74,13 +74,13 @@ def main_cli(ctx,   dslquery=None,
         elif queryprompt:
             final_query = click.prompt('> Please enter a DSL query:\n')
 
-        df  =  main.build_viz(final_query, None, score, freq, edgeweight)
+        df  =  main.build_viz(final_query, None, cscore, cfreq, nnodes, nedges)
 
         while True:
             # keep re-rendering using extracted data (only if params were not passed)
-            if not (score and freq and edgeweight):
-                if click.confirm('> Try again?'):
-                    main.build_viz(final_query, [df])  # as list to allow boolean check
+            if not (cscore and cfreq and nnodes and nedges):
+                if click.confirm('-------------\n> Try again?'):
+                    main.build_viz(final_query, [df], use_defaults=False)  
                 else:
                     break
 

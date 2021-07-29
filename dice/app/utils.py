@@ -203,5 +203,5 @@ def dsl_generate_query_from_search_keywords(keywords):
         for "{newk}" 
         where concepts is not empty
         return publications[id+concepts_scores] 
-        sort by times_cited limit 500"""
+        sort by times_cited limit 1000"""
     return q 
