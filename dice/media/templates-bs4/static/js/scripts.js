@@ -245,6 +245,7 @@ function add_node_to_focus_list(nodeid) {
   $(".node-active").removeClass("node-active");
   $( "#node-" + nodeid  ).addClass("node-active");
 
+
 }
 
 
@@ -254,3 +255,5 @@ function scrollTo(elementtoScrollToID) {
     scrollTop: $("#"+elementtoScrollToID).offset().top
   }, 500);
 }
+
+
