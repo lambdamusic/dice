@@ -23,8 +23,8 @@ TEMPLATE_HTML_FILE = "template-main.html"  # ==> NEWEST IN DEVELOPMENT
 
 def tag_style(input_freqn):
     """Custom filter for styling concept tags from freq-normalised"""
-    MIN_OPAC, MAX_OPAC = 50, 90
-    input_freqn = input_freqn * 1.5
+    MIN_OPAC, MIN_OPAC, MAX_OPAC = 50, 70, 90
+    input_freqn = input_freqn + MIN_OPAC
     if input_freqn < MIN_OPAC:
         font, opac = 70, MIN_OPAC
     elif input_freqn > MAX_OPAC:
