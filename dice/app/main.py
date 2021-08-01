@@ -12,7 +12,7 @@ from . import settings
 
 
 
-def build_viz(dslquery, cached_data=None, score=None, freq=None, nnodes=None, nedges=None, use_defaults=True):
+def build_viz(dslquery, cached_data=None, score=None, freq=None, nnodes=None, nedges=None, title=None, use_defaults=True):
     
     fm = FileManager()
 
@@ -34,7 +34,7 @@ def build_viz(dslquery, cached_data=None, score=None, freq=None, nnodes=None, ne
 
     if len(nodes) and len(edges):
 
-        n = NetworkViz(fileManager=fm, dslquery=dslquery)
+        n = NetworkViz(fileManager=fm, dslquery=dslquery, title=title)
         n.add_nodes(nodes)
         n.add_edges(edges)
         n.render_data_export(ngraph)
@@ -50,7 +50,7 @@ def build_viz(dslquery, cached_data=None, score=None, freq=None, nnodes=None, ne
 
 
 
-def test_run(filename="testdata/dsl_dataframe.json", score=0.5, freq=2):
+def test_run(filename="testdata/dsl_dataframe.json", score=0.5, freq=2, title=None):
     """Takes local JSON data from cached DSL query and build a viz with it.
     """
     fm = FileManager()
@@ -65,7 +65,7 @@ def test_run(filename="testdata/dsl_dataframe.json", score=0.5, freq=2):
 
     if len(nodes) and len(edges):
 
-        n = NetworkViz(fileManager=fm, dslquery=dslquery)
+        n = NetworkViz(fileManager=fm, dslquery=dslquery, title=title)
         n.add_nodes(nodes)
         n.add_edges(edges)
         n.render_data_export(ngraph)

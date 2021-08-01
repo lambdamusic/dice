@@ -34,22 +34,25 @@ $ dice 'search publications for "cancer" return publications[id+concepts] limit 
 @click.argument('dslquery', nargs=-1)
 @click.option('--examples', is_flag=True, help='Show some examples')
 @click.option('--test', is_flag=True, help='Build visualization using local test data')
+@click.option('--title', "-t", help='Title for the HTML output. Defaults to keyword search  string or timestamp.')
 @click.option('--keywords', "-k", help='Keywords for a Dimensions full-text search. Top 1000 most cited publications are used to build the concepts map.')
 @click.option('--score', "-s", help='Concept min score: default is 0.6')
 @click.option('--freq', "-f", help='Concept min frequency: default is 3')
 @click.option('--nodes', "-n", help='Network max nodes: default is 200')
 @click.option('--edges', "-e", help='Network max edges: default is 300')
 @click.pass_context
-def main_cli(ctx,   dslquery=None, 
-                    examples=False, 
-                    test=False, 
-                    keywords=None, 
-                    score=None, 
-                    freq=None, 
-                    nodes=None, 
-                    edges=None, 
-                    verbose=True):
-    """Bootstrap a concept map from a Dimensions API search, expressed either as a full DSL query (must return concepts data) or, using the -k option, as a series of keywordss."""
+def main_cli(ctx,   
+                dslquery=None, 
+                examples=False, 
+                test=False, 
+                title=None, 
+                keywords=None, 
+                score=None, 
+                freq=None, 
+                nodes=None, 
+                edges=None, 
+                verbose=True):
+    """Bootstrap a concept map from a Dimensions API search. Pass either a full DSL query (must return concepts data) or, using the -k option, a series of keywords."""
 
     if examples:
         click.secho(CMD_LINE_EXAMPLES, fg="green")
@@ -57,7 +60,7 @@ def main_cli(ctx,   dslquery=None,
 
     elif test:
         click.secho("Building test visualization..", fg="green")
-        main.test_run()
+        main.test_run(title=title)
         return
 
     elif keywords or dslquery:
@@ -73,13 +76,13 @@ def main_cli(ctx,   dslquery=None,
             if verbose: click.secho("Q = " + dslquery[0], dim=True)
 
 
-        df  =  main.build_viz(final_query, None, score, freq, nodes, edges)
+        df  =  main.build_viz(dslquery=final_query, cached_data=None, score=score, freq=freq, nnodes=nodes, nedges=edges, title=title)
 
         while True:
             # keep re-rendering using extracted data (only if params were not passed)
             if not (score and freq and nodes and edges):
                 if click.confirm('-------------\n> Try again?'):
-                    main.build_viz(final_query, [df], use_defaults=False)  
+                    main.build_viz(dslquery=final_query, cached_data=[df], title=title, use_defaults=False)  
                 else:
                     break
 

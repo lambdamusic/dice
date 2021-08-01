@@ -43,7 +43,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                           <a class="dropdown-item" href="graph_data.json" download>JSON</a>
-                          <a class="dropdown-item" href="#">SKOS</a>
+                          <!-- <a class="dropdown-item" href="#">SKOS</a> -->
                         </div>
                       </li>
 
@@ -91,8 +91,56 @@
         <div class="container">
             
 
+
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12 jumbotron">
+
+                    <h4>In Focus</h4>
+                    <hr>
+
+                    <div id="initial-message" class="lead">
+                        No concepts currently in focus
+                    </div>
+
+                    <div id="action-results">
+
+                        {% for node in nodes|sort(attribute="id")  %}
+                        <div id="node-{{node.id}}" style="display: none;" class="node-infos">
+                            
+                            <p class="lead">
+                                <span style="font-weight: bold;">{{node.label}}</span>
+
+                                <span style="font-size: 60%;">
+                                    <a href="https://app.dimensions.ai/discover/publication?search_mode=content&search_text=%22{{node.label}}%22%20AND%20{{query_keywords}}&search_type=kws&search_field=full_search" target="_blank" >View in Dimensions</a> 
+                                </span>
+
+                                <br />
+                            </p>
+
+                            <p>
+                            This concept appears <code>{{node.freq}}</code> times with an average relevancy score of <code>{{node.score_avg}}</code>. 
+                            <br   />
+                            <!-- Its neighbours are: ... -->
+                            </p>
+
+
+                            <hr>
+                            
+
+                        </div>
+                        
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- row ends -->
+
+
+            <div class="row">
+                <div class="col-md-12">
 
                     <h4>Concepts ({{nodes|length}})</h4>
                     <hr>
@@ -113,41 +161,9 @@
 
                 </div>
 
-
-                <div class="col-md-6">
-
-                    <h4>In Focus</h4>
-                    <hr>
-
-                    <div id="initial-message" class="lead">
-                        No concepts currently in focus
-                    </div>
-
-                    <div id="action-results">
-
-                        {% for node in nodes  %}
-                        <div id="node-{{node.id}}" style="display: none;" class="node-infos">
-                            
-                            <h5>{{node.label}}
-
-                                <span style="font-size: 60%;">
-                                    <a href="https://app.dimensions.ai/discover/publication?search_mode=content&search_text=%22{{node.label}}%22%20AND%20{{query_keywords}}&search_type=kws&search_field=full_search" target="_blank" >View in Dimensions</a> 
-                                </span>
-
-                            </h5>
-
-                            <hr>
-                            
-
-                        </div>
-                        
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
             </div>
+            <!-- row ends -->
+
 
             
             <div id="about" class="row" style="margin-top: 50px;">
